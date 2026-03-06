@@ -38,4 +38,13 @@ public class Usercontroller {
         this.userRepo.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Users user) {
+        Users u = this.userRepo.findByUsername(user.getUsername());
+        if (u != null && u.getPassword().equals(user.getPassword())) {
+            return ResponseEntity.ok(u);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+    }
 }
